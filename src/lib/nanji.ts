@@ -10,10 +10,26 @@ const CHOUDO = 'ちょうど'
 const GORO = 'ごろ'
 const DESU = 'です。'
 
-export function generatePhrase(date = new Date()): string {
-  let hour = date.getHours()
-  let minute = date.getMinutes()
+const MAX_REGEN_ATTEMPTS: number = 10
 
+export function getNewPhrase(
+  previous?: string,
+  time?: { hour: number; minute: number },
+) {
+  if (!time) {
+    const now = new Date()
+    time = { hour: now.getHours(), minute: now.getMinutes() }
+  }
+
+  for (let i = 0; i < MAX_REGEN_ATTEMPTS; ++i) {
+    const phrase = generatePhrase(time.hour, time.minute)
+    if (phrase !== previous) return phrase
+  }
+
+  return previous
+}
+
+function generatePhrase(hour: number, minute: number): string {
   const imawa = coinFlip() ? IMAWA : ''
 
   const choudo = (minute === 0 || minute === 30) && coinFlip() ? CHOUDO : ''
@@ -48,8 +64,6 @@ export function generatePhrase(date = new Date()): string {
 
   return `${imawa}${ampm}${time}${goro}${DESU}`
 }
-
-// Helpers
 
 function round(hour: number, minute: number) {
   if (minute < 5) {

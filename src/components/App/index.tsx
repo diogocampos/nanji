@@ -1,13 +1,13 @@
 import { useState } from 'react'
 
-import { generatePhrase } from '../../lib/nanji'
+import { getNewPhrase } from '../../lib/nanji'
 import './App.css'
 
 function App() {
-  const [phrase, setPhrase] = useState(generatePhrase)
+  const [phrase, setPhrase] = useState(getNewPhrase)
 
   function handleRegenerate() {
-    setPhrase(generatePhrase())
+    setPhrase(getNewPhrase(phrase))
   }
 
   return (
