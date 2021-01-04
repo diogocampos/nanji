@@ -4,14 +4,9 @@
   "private": true,
   "scripts": {
     "start": "react-scripts start",
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
     "test": "react-scripts test",
     "build": "react-scripts build"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
   },
   "browserslist": {
     "production": [
