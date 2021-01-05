@@ -1,19 +1,20 @@
 import { useState } from 'react'
 
 import { getNewPhrase } from '../../lib/nanji'
-import { getVoices, speak } from '../../lib/speech'
-import './App.css'
+import { speak } from '../../lib/speech'
+import VoicePicker from '../VoicePicker'
+import './styles.css'
 
-function App() {
+export default function App() {
   const [phrase, setPhrase] = useState(getNewPhrase)
-  const [voices] = useState(() => getVoices('ja'))
+  const [voice, setVoice] = useState<SpeechSynthesisVoice>()
 
   function handleRegenerate() {
     setPhrase(getNewPhrase(phrase))
   }
 
   function handleSpeak() {
-    speak(phrase, voices[0])
+    if (voice) speak(phrase, voice)
   }
 
   return (
@@ -21,13 +22,16 @@ function App() {
       <h1 className='title' title='What time is it?' lang='ja'>
         何時ですか？
       </h1>
+
       <p className='time' lang='ja'>
         {phrase}
       </p>
+
       <button onClick={handleRegenerate}>Regenerate</button>
-      {voices.length > 0 && <button onClick={handleSpeak}>Speak</button>}
+
+      <VoicePicker lang='ja' onChange={setVoice}>
+        <button onClick={handleSpeak}>Speak</button>
+      </VoicePicker>
     </div>
   )
 }
-
-export default App
