@@ -1,13 +1,19 @@
 import { useState } from 'react'
 
 import { getNewPhrase } from '../../lib/nanji'
+import { getVoices, speak } from '../../lib/speech'
 import './App.css'
 
 function App() {
   const [phrase, setPhrase] = useState(getNewPhrase)
+  const [voices] = useState(() => getVoices('ja'))
 
   function handleRegenerate() {
     setPhrase(getNewPhrase(phrase))
+  }
+
+  function handleSpeak() {
+    speak(phrase, voices[0])
   }
 
   return (
@@ -19,6 +25,7 @@ function App() {
         {phrase}
       </p>
       <button onClick={handleRegenerate}>Regenerate</button>
+      {voices.length > 0 && <button onClick={handleSpeak}>Speak</button>}
     </div>
   )
 }

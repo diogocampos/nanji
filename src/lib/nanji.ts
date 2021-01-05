@@ -15,7 +15,7 @@ const MAX_REGEN_ATTEMPTS: number = 10
 export function getNewPhrase(
   previous?: string,
   time?: { hour: number; minute: number },
-) {
+): string {
   if (!time) {
     const now = new Date()
     time = { hour: now.getHours(), minute: now.getMinutes() }
@@ -26,7 +26,7 @@ export function getNewPhrase(
     if (phrase !== previous) return phrase
   }
 
-  return previous
+  return previous || ''
 }
 
 function generatePhrase(hour: number, minute: number): string {
