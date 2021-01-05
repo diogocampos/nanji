@@ -11,12 +11,15 @@ export function speak(
   text: string,
   voice: SpeechSynthesisVoice,
   options: { slow?: boolean } = {},
-): void {
-  const utterance = new SpeechSynthesisUtterance(text)
-  utterance.lang = voice.lang
-  utterance.voice = voice
-  if (options.slow) utterance.rate = 0.5
-  speechSynthesis.speak(utterance)
+): Promise<void> {
+  return new Promise((resolve) => {
+    const utterance = new SpeechSynthesisUtterance(text)
+    utterance.lang = voice.lang
+    utterance.voice = voice
+    if (options.slow) utterance.rate = 0.5
+    utterance.onend = () => resolve()
+    speechSynthesis.speak(utterance)
+  })
 }
 
 // Helpers

@@ -8,6 +8,7 @@ import './styles.css'
 export default function App() {
   const [phrase, setPhrase] = useState(getNewPhrase)
   const [voice, setVoice] = useState<SpeechSynthesisVoice>()
+  const [isSpeaking, setIsSpeaking] = useState(false)
   const [slow, setSlow] = useState(false)
 
   function handleRefresh() {
@@ -15,9 +16,11 @@ export default function App() {
     setSlow(false)
   }
 
-  function handleSpeak() {
+  async function handleSpeak() {
     if (voice) {
-      speak(phrase, voice, { slow })
+      setIsSpeaking(true)
+      await speak(phrase, voice, { slow })
+      setIsSpeaking(false)
       setSlow((slow) => !slow)
     }
   }
@@ -35,7 +38,9 @@ export default function App() {
       <button onClick={handleRefresh}>Refresh</button>
 
       <VoicePicker lang='ja' onChange={setVoice}>
-        <button onClick={handleSpeak}>Speak</button>
+        <button disabled={isSpeaking} onClick={handleSpeak}>
+          Speak
+        </button>
       </VoicePicker>
     </div>
   )
