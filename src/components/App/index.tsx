@@ -12,8 +12,12 @@ function App() {
 
   return (
     <div className='App'>
-      <h1 className='title'>何時ですか？</h1>
-      <p className='time'>{phrase}</p>
+      <h1 className='title' title='What time is it?' lang='ja'>
+        何時ですか？
+      </h1>
+      <p className='time' lang='ja'>
+        {phrase}
+      </p>
       <button onClick={handleRegenerate}>Regenerate</button>
     </div>
   )
