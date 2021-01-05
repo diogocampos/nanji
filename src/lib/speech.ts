@@ -7,10 +7,15 @@ export function getVoices(lang: string): SpeechSynthesisVoice[] {
   return uniqBy('voiceURI', voices)
 }
 
-export function speak(text: string, voice: SpeechSynthesisVoice) {
+export function speak(
+  text: string,
+  voice: SpeechSynthesisVoice,
+  options: { slow?: boolean } = {},
+): void {
   const utterance = new SpeechSynthesisUtterance(text)
   utterance.lang = voice.lang
   utterance.voice = voice
+  if (options.slow) utterance.rate = 0.5
   speechSynthesis.speak(utterance)
 }
 
