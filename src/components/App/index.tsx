@@ -16,6 +16,10 @@ export default function App() {
     setSlow(false)
   }
 
+  function handleCopy() {
+    navigator.clipboard?.writeText(phrase).catch(console.error)
+  }
+
   async function handleSpeak() {
     if (voice) {
       setIsSpeaking(true)
@@ -36,6 +40,7 @@ export default function App() {
       </p>
 
       <button onClick={handleRefresh}>Refresh</button>
+      {!!navigator.clipboard && <button onClick={handleCopy}>Copy</button>}
 
       <VoicePicker lang='ja' onChange={setVoice}>
         <button disabled={isSpeaking} onClick={handleSpeak}>
