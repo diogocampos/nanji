@@ -15,6 +15,7 @@
         "alphabetize": { "order": "asc", "caseInsensitive": true }
       }
     ],
+    "no-console": ["warn", { "allow": ["error", "warn"] }],
     "prefer-const": "warn",
     "react/jsx-no-useless-fragment": "warn",
     "react/self-closing-comp": ["warn", { "component": true, "html": true }],
