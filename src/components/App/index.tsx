@@ -1,32 +1,18 @@
 import { useState } from 'react'
 
 import { getNewPhrase } from '../../lib/nanji'
-import { speak } from '../../lib/speech'
-import VoicePicker from '../VoicePicker'
+import Speaker from '../Speaker'
 import './styles.css'
 
 export default function App() {
   const [phrase, setPhrase] = useState(getNewPhrase)
-  const [voice, setVoice] = useState<SpeechSynthesisVoice>()
-  const [isSpeaking, setIsSpeaking] = useState(false)
-  const [slow, setSlow] = useState(false)
 
   function handleRefresh() {
     setPhrase(getNewPhrase(phrase))
-    setSlow(false)
   }
 
   function handleCopy() {
     navigator.clipboard?.writeText(phrase).catch(console.error)
-  }
-
-  async function handleSpeak() {
-    if (voice) {
-      setIsSpeaking(true)
-      await speak(phrase, voice, { slow })
-      setIsSpeaking(false)
-      setSlow((slow) => !slow)
-    }
   }
 
   return (
@@ -42,11 +28,7 @@ export default function App() {
       <button onClick={handleRefresh}>Refresh</button>
       {!!navigator.clipboard && <button onClick={handleCopy}>Copy</button>}
 
-      <VoicePicker lang='ja' onChange={setVoice}>
-        <button disabled={isSpeaking} onClick={handleSpeak}>
-          Speak
-        </button>
-      </VoicePicker>
+      <Speaker lang='ja' text={phrase} />
     </div>
   )
 }

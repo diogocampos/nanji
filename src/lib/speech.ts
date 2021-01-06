@@ -1,4 +1,4 @@
-export function getVoices(lang: string): SpeechSynthesisVoice[] {
+export function getVoices(lang: string = ''): SpeechSynthesisVoice[] {
   const voices =
     window.speechSynthesis
       ?.getVoices()
@@ -11,15 +11,19 @@ export function speak(
   text: string,
   voice: SpeechSynthesisVoice,
   options: { slow?: boolean } = {},
-): Promise<void> {
-  return new Promise((resolve) => {
-    const utterance = new SpeechSynthesisUtterance(text)
-    utterance.lang = voice.lang
-    utterance.voice = voice
-    if (options.slow) utterance.rate = 0.5
-    utterance.onend = () => resolve()
-    speechSynthesis.speak(utterance)
-  })
+): void {
+  const { slow = false } = options
+
+  const utterance = new SpeechSynthesisUtterance(text)
+  utterance.lang = voice.lang
+  utterance.voice = voice
+  if (slow) utterance.rate = 0.5
+
+  speechSynthesis.speak(utterance)
+}
+
+export function isSpeaking(): boolean {
+  return window.speechSynthesis?.speaking || false
 }
 
 // Helpers
