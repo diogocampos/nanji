@@ -2,7 +2,10 @@ import { ChangeEvent, useEffect, useMemo, useState } from 'react'
 
 import { getVoices, isSpeaking, speak } from '../../lib/speech'
 
-export default function Speaker(props: { lang: string; text: string }) {
+export default function Speaker(props: {
+  readonly lang: string
+  readonly text: string
+}) {
   const availableVoices = useMemo(() => getVoices(props.lang), [props.lang])
 
   const [voice, setVoice] = useState<SpeechSynthesisVoice>()

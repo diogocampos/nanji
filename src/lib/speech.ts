@@ -10,14 +10,14 @@ export function getVoices(lang: string = ''): SpeechSynthesisVoice[] {
 export function speak(
   text: string,
   voice: SpeechSynthesisVoice,
-  options: { slow?: boolean } = {},
+  options: { readonly slow?: boolean } = {},
 ): void {
   const { slow = false } = options
 
   const utterance = new SpeechSynthesisUtterance(text)
   utterance.lang = voice.lang
   utterance.voice = voice
-  if (slow) utterance.rate = 0.5
+  if (slow) utterance.rate = 0.6
 
   speechSynthesis.speak(utterance)
 }
@@ -28,7 +28,7 @@ export function isSpeaking(): boolean {
 
 // Helpers
 
-function uniqBy<T>(property: keyof T, items: T[]): T[] {
+function uniqBy<T>(property: keyof T, items: readonly T[]): T[] {
   const seen: { [_: string]: boolean | undefined } = {}
 
   return items.filter((item) => {
