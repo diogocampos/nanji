@@ -1,14 +1,13 @@
-import { useMemo, useState } from 'react'
+import { Fragment, useMemo, useState } from 'react'
 
 import { getNewPhrase } from '../../lib/nanji'
+import Ruby from '../../lib/ruby'
 import Speaker from '../Speaker'
 import './styles.css'
 
 export default function App() {
   const [phrase, setPhrase] = useState(getNewPhrase)
   const text = useMemo(() => phrase.toString(), [phrase])
-
-  console.log(phrase.toDebugString())
 
   function handleRefresh() {
     setPhrase(getNewPhrase(phrase))
@@ -25,7 +24,7 @@ export default function App() {
       </h1>
 
       <p className='time' lang='ja'>
-        {text}
+        <RubySequence content={phrase} />
       </p>
 
       <button onClick={handleRefresh}>Refresh</button>
@@ -33,5 +32,20 @@ export default function App() {
 
       <Speaker lang='ja' text={text} />
     </div>
+  )
+}
+
+function RubySequence(props: { content: Ruby }) {
+  return (
+    <ruby>
+      {props.content.map(({ base, text }, i) => (
+        <Fragment key={i}>
+          {base}
+          <rp>(</rp>
+          <rt>{text}</rt>
+          <rp>)</rp>
+        </Fragment>
+      ))}
+    </ruby>
   )
 }

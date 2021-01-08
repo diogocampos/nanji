@@ -5,3 +5,13 @@
 .App .time {
   font-size: 500%;
 }
+
+.App ruby {
+  -webkit-ruby-position: after;
+  ruby-position: under;
+}
+
+.App ruby rt {
+  font-size: 20%;
+  opacity: 0.5;
+}
