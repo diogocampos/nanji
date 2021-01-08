@@ -94,7 +94,7 @@ function generatePhrase(hour: number, minute: number): Ruby {
   }
 
   let ampm = R()
-  if (hour % 12 > 0 && coinFlip()) {
+  if (coinFlip()) {
     ampm = hour < 12 ? GOZEN : GOGO
     hour %= 12
   }
