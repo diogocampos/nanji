@@ -114,7 +114,9 @@ function generatePhrase(hour: number, minute: number): Ruby {
   const hhmm = R(hh, mm)
   const time = ampm.length || coinFlip() ? R(hhmm, choudo) : R(choudo, hhmm)
 
-  return R(imawa, ampm, time, goro, DESU)
+  const desu = imawa.length || coinFlip() ? DESU : R()
+
+  return R(imawa, ampm, time, goro, desu)
 }
 
 function getHourSegment(hour: number): Ruby {
