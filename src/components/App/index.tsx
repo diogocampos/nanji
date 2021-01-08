@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 
 import { getNewPhrase } from '../../lib/nanji'
 import Speaker from '../Speaker'
@@ -6,13 +6,16 @@ import './styles.css'
 
 export default function App() {
   const [phrase, setPhrase] = useState(getNewPhrase)
+  const text = useMemo(() => phrase.toString(), [phrase])
+
+  console.log(phrase.toDebugString())
 
   function handleRefresh() {
     setPhrase(getNewPhrase(phrase))
   }
 
   function handleCopy() {
-    navigator.clipboard?.writeText(phrase).catch(console.error)
+    navigator.clipboard?.writeText(text).catch(console.error)
   }
 
   return (
@@ -22,13 +25,13 @@ export default function App() {
       </h1>
 
       <p className='time' lang='ja'>
-        {phrase}
+        {text}
       </p>
 
       <button onClick={handleRefresh}>Refresh</button>
       {!!navigator.clipboard && <button onClick={handleCopy}>Copy</button>}
 
-      <Speaker lang='ja' text={phrase} />
+      <Speaker lang='ja' text={text} />
     </div>
   )
 }

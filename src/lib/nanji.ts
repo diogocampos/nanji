@@ -1,47 +1,52 @@
-const IMAWA = '今は'
-const REIJI = '零時'
-const SHOUGO = '正午'
-const GOZEN = '午前'
-const GOGO = '午後'
+import Ruby, { r, R } from './ruby'
+
+const IMAWA = R(r('今', 'ima'), r('は', 'wa'))
+const REIJI = R(r('零', 'rei'), r('時', 'ji'))
+const SHOUGO = R(r('正', 'shō'), r('午', 'go'))
+const GOZEN = R(r('午', 'go'), r('前', 'zen'))
+const GOGO = R(r('午', 'go'), r('後', 'go'))
+const HAN = r('半', 'han')
+const CHOUDO = R(r('ちょう', 'chō'), r('ど', 'do'))
+const GORO = R(r('ご', 'go'), r('ろ', 'ro'))
+const DESU = R(r('で', 'de'), r('す', 'su'), r('。', ''))
+
 const JI = '時'
 const FUN = '分'
-const HAN = '半'
-const CHOUDO = 'ちょうど'
-const GORO = 'ごろ'
-const DESU = 'です。'
 
 const MAX_REGEN_ATTEMPTS: number = 10
 
 export function getNewPhrase(
-  previous: string = '',
-  time?: { hour: number; minute: number },
-): string {
+  previous: Ruby = R(),
+  time?: { readonly hour: number; readonly minute: number },
+): Ruby {
   if (!time) {
     const now = new Date()
     time = { hour: now.getHours(), minute: now.getMinutes() }
   }
 
+  const previousString = previous.toString()
+
   for (let i = 0; i < MAX_REGEN_ATTEMPTS; ++i) {
     const phrase = generatePhrase(time.hour, time.minute)
-    if (phrase !== previous) return phrase
+    if (phrase.toString() !== previousString) return phrase
   }
 
   return previous
 }
 
-function generatePhrase(hour: number, minute: number): string {
-  const imawa = coinFlip() ? IMAWA : ''
+function generatePhrase(hour: number, minute: number): Ruby {
+  const imawa = coinFlip() ? IMAWA : R()
 
-  const choudo = (minute === 0 || minute === 30) && coinFlip() ? CHOUDO : ''
+  const choudo = (minute === 0 || minute === 30) && coinFlip() ? CHOUDO : R()
 
-  let goro = ''
+  let goro = R()
   const rounded = coinFlip() && round(hour, minute)
   if (rounded && (rounded.hour !== hour || rounded.minute !== minute)) {
     ;({ hour, minute } = rounded)
     goro = GORO
   }
 
-  let ampm = ''
+  let ampm = R()
   if (hour % 12 > 0 && coinFlip()) {
     ampm = hour < 12 ? GOZEN : GOGO
     hour %= 12
@@ -51,18 +56,18 @@ function generatePhrase(hour: number, minute: number): string {
   const hh
     = hour === 0 && minute === 0 ? REIJI
     : hour === 12 && minute === 0 ? SHOUGO
-    : `${hour}${JI}`
+    : r(`${hour}${JI}`, '')
 
   // prettier-ignore
   const mm
-    = minute === 0 ? ''
-    : minute === 30 && (goro || coinFlip()) ? HAN
-    : `${minute}${FUN}`
+    = minute === 0 ? R()
+    : minute === 30 && (goro.length || coinFlip()) ? HAN
+    : r(`${minute}${FUN}`, '')
 
-  const hhmm = `${hh}${mm}`
-  const time = ampm || coinFlip() ? `${hhmm}${choudo}` : `${choudo}${hhmm}`
+  const hhmm = R(hh, mm)
+  const time = ampm.length || coinFlip() ? R(hhmm, choudo) : R(choudo, hhmm)
 
-  return `${imawa}${ampm}${time}${goro}${DESU}`
+  return R(imawa, ampm, time, goro, DESU)
 }
 
 function round(hour: number, minute: number) {
