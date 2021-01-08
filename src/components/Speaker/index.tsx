@@ -1,5 +1,6 @@
 import { ChangeEvent, useEffect, useMemo, useState } from 'react'
 
+import { storageItem } from '../../lib/helpers'
 import { getVoices, isSpeaking, speak } from '../../lib/speech'
 
 export default function Speaker(props: {
@@ -7,12 +8,11 @@ export default function Speaker(props: {
   readonly text: string
 }) {
   const availableVoices = useMemo(() => getVoices(props.lang), [props.lang])
-
   const [voice, setVoice] = useState<SpeechSynthesisVoice>()
   const [slow, setSlow] = useState(false)
 
   useEffect(() => {
-    setVoice(availableVoices[0])
+    setVoice(getInitialVoice(availableVoices))
   }, [availableVoices])
 
   useEffect(() => {
@@ -28,17 +28,16 @@ export default function Speaker(props: {
 
   function handleChangeVoice(event: ChangeEvent<HTMLSelectElement>) {
     const voiceURI = event.target.value
-    const voice = availableVoices.find((voice) => voice.voiceURI === voiceURI)
-    setVoice(voice)
+    setVoice(setVoiceByURI(voiceURI, availableVoices))
   }
 
-  if (!availableVoices.length) return null
+  if (!voice) return null
 
   return (
     <span className='Speaker'>
       <button onClick={handleSpeak}>Speak</button>
 
-      <select onChange={handleChangeVoice}>
+      <select value={voice.voiceURI} onChange={handleChangeVoice}>
         {availableVoices.map(({ voiceURI, name }) => (
           <option key={voiceURI} value={voiceURI}>
             {voiceURI.endsWith('.premium') ? `${name} (Enhanced)` : name}
@@ -47,4 +46,31 @@ export default function Speaker(props: {
       </select>
     </span>
   )
+}
+
+const [loadVoiceURI, saveVoiceURI] = storageItem('selectedVoiceURI')
+
+function getInitialVoice(
+  voices: readonly SpeechSynthesisVoice[],
+): SpeechSynthesisVoice | undefined {
+  const voiceURI = loadVoiceURI()
+  const voice = voiceURI ? findVoiceByURI(voiceURI, voices) : undefined
+  if (voiceURI && !voice) saveVoiceURI(null)
+  return voice || voices[0]
+}
+
+function setVoiceByURI(
+  voiceURI: string,
+  voices: readonly SpeechSynthesisVoice[],
+): SpeechSynthesisVoice | undefined {
+  const voice = findVoiceByURI(voiceURI, voices)
+  if (voice) saveVoiceURI(voice.voiceURI)
+  return voice
+}
+
+function findVoiceByURI(
+  voiceURI: string,
+  voices: readonly SpeechSynthesisVoice[],
+): SpeechSynthesisVoice | undefined {
+  return voices.find((voice) => voice.voiceURI === voiceURI)
 }
