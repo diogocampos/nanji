@@ -7,7 +7,18 @@ class Ruby {
   private readonly _atoms: readonly RubyAtom[]
 
   constructor(atoms: readonly RubyAtom[]) {
-    this._atoms = atoms
+    const _atoms = []
+
+    for (let i = 0, len = atoms.length; i < len; ++i) {
+      let atom = atoms[i]
+      while (!atom.text && i + 1 < len) {
+        const next = atoms[++i]
+        atom = { base: atom.base + next.base, text: next.text }
+      }
+      _atoms.push(atom)
+    }
+
+    this._atoms = _atoms
   }
 
   get length(): number {

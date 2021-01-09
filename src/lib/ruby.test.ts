@@ -30,6 +30,26 @@ describe('R', () => {
       { base: 'gh', text: '4' },
     ])
   })
+
+  it('merges text-less atoms with their successor', () => {
+    const ruby = R(
+      r('ab', '1'),
+      R(r('cd', ''), r('ef', '2')),
+      R(r('gh', ''), r('ij', ''), r('kl', '3')),
+      R(r('mn', '4'), r('op', '')),
+      r('qr', '5'),
+      r('st', ''),
+    )
+
+    expect(ruby['_atoms']).toEqual([
+      { base: 'ab', text: '1' },
+      { base: 'cdef', text: '2' },
+      { base: 'ghijkl', text: '3' },
+      { base: 'mn', text: '4' },
+      { base: 'opqr', text: '5' },
+      { base: 'st', text: '' },
+    ])
+  })
 })
 
 describe('Ruby', () => {
