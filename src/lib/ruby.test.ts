@@ -1,4 +1,4 @@
-import Ruby, { r, R } from './ruby'
+import Ruby, { R, r } from './ruby'
 
 describe('r', () => {
   it('returns a Ruby with a single atom', () => {
