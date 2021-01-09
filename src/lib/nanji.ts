@@ -1,4 +1,4 @@
-import Ruby, { r, R } from './ruby'
+import Ruby, { R, r } from './ruby'
 
 const IMAWA = R(r('今', 'ima'), r('は', 'wa'))
 const REIJI = R(r('零', 'rei'), r('時', 'ji'))
@@ -74,14 +74,14 @@ export function getNewPhrase(
   const previousString = previous.toString()
 
   for (let i = 0; i < MAX_REGEN_ATTEMPTS; ++i) {
-    const phrase = generatePhrase(time.hour, time.minute)
+    const phrase = nanji.buildPhrase(time.hour, time.minute)
     if (phrase.toString() !== previousString) return phrase
   }
 
   return previous
 }
 
-function generatePhrase(hour: number, minute: number): Ruby {
+function buildPhrase(hour: number, minute: number): Ruby {
   const imawa = coinFlip() ? IMAWA : R()
 
   const choudo = (minute === 0 || minute === 30) && coinFlip() ? CHOUDO : R()
@@ -118,6 +118,15 @@ function generatePhrase(hour: number, minute: number): Ruby {
 
   return R(imawa, ampm, time, goro, desu)
 }
+
+const nanji = {
+  getNewPhrase,
+  buildPhrase,
+}
+
+export default nanji
+
+// Helpers
 
 function getHourSegment(hour: number): Ruby {
   return getTimeSegment(hour, HOURS)
