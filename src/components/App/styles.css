@@ -11,8 +11,8 @@
   ruby-position: under;
 }
 
-.RubySpan ruby:hover:not(.no-text),
-.RubySpan ruby:hover rt {
+.RubySpan:not(.hover) ruby:hover:not(.no-text),
+.RubySpan:not(.hover) ruby:hover rt {
   border-radius: 5px;
   background-color: #eee;
 }
@@ -21,4 +21,8 @@
   padding: 10px 0;
   color: #999;
   font-size: 20%;
+}
+
+.RubySpan.hover:not(:hover) rt {
+  visibility: hidden;
 }
