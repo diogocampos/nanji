@@ -4,11 +4,11 @@ import { R, r } from './ruby'
 
 const { spyOn } = jest
 
-afterEach(() => {
-  jest.restoreAllMocks()
-})
-
 describe('getNewPhrase', () => {
+  afterEach(() => {
+    jest.restoreAllMocks()
+  })
+
   describe('with no arguments', () => {
     it('calls buildPhrase once with the current time', () => {
       const phrase = r(random.string(), random.string())
@@ -53,7 +53,22 @@ describe('getNewPhrase', () => {
       const result = nanji.getNewPhrase(previousPhrase)
 
       expect(nanji.buildPhrase).toHaveBeenCalledTimes(3)
-      expect(result).toEqual(newPhrase)
+      expect(result).toEqual(R(newPhrase))
+    })
+  })
+
+  describe('with a specific time', () => {
+    it('calls buildPhrase with the given time', () => {
+      const phrase = r(random.string(), random.string())
+      const time = { hour: random.hour(), minute: random.minute() }
+
+      spyOn(nanji, 'buildPhrase').mockReturnValue(phrase)
+
+      const result = nanji.getNewPhrase(R(), time)
+
+      expect(nanji.buildPhrase).toHaveBeenCalledTimes(1)
+      expect(nanji.buildPhrase).toHaveBeenCalledWith(time.hour, time.minute)
+      expect(result).toEqual(R(phrase))
     })
   })
 })
