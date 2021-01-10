@@ -1,0 +1,32 @@
+.App {
+  text-align: center;
+
+  .App-time {
+    font-size: 500%;
+  }
+}
+
+.RubySpan {
+  ruby {
+    -webkit-ruby-position: after;
+    ruby-position: under;
+  }
+
+  rt {
+    padding: 10px 0;
+    font-size: 20%;
+    color: #999;
+  }
+
+  &:not(.RubySpan-shy) ruby:hover:not(.RubySpan-notext) {
+    &,
+    & rt {
+      border-radius: 5px;
+      background-color: #eee;
+    }
+  }
+
+  &.RubySpan-shy:not(:hover) rt {
+    visibility: hidden;
+  }
+}

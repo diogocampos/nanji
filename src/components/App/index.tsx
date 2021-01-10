@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react'
 import { getNewPhrase } from '../../lib/nanji'
 import Ruby, { R, r } from '../../lib/ruby'
 import Speaker from '../Speaker'
-import './styles.css'
+import './styles.scss'
 
 const TITLE = R(
   r('何', 'nan'),
@@ -29,11 +29,11 @@ export default function App() {
 
   return (
     <div className='App'>
-      <h1 className='title' title='What time is it?' lang='ja'>
-        <RubySpan content={TITLE} hover />
+      <h1 className='App-title' title='What time is it?' lang='ja'>
+        <RubySpan content={TITLE} shy />
       </h1>
 
-      <p className='time' lang='ja'>
+      <p className='App-time' lang='ja'>
         <RubySpan content={phrase} />
       </p>
 
@@ -47,13 +47,13 @@ export default function App() {
   )
 }
 
-function RubySpan(props: { content: Ruby; hover?: boolean }) {
-  const { hover = false } = props
+function RubySpan(props: { content: Ruby; shy?: boolean }) {
+  const { shy = false } = props
 
   return (
-    <span className={classNames('RubySpan', hover && 'hover')}>
+    <span className={classNames('RubySpan', shy && 'RubySpan-shy')}>
       {props.content.map(({ base, text }, i) => (
-        <ruby key={i} className={classNames(!text && 'no-text')}>
+        <ruby key={i} className={classNames(!text && 'RubySpan-notext')}>
           <span>{base}</span>
           {text && (
             <>
