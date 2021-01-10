@@ -6,12 +6,19 @@
   font-size: 500%;
 }
 
-.App ruby {
+.RubySpan ruby {
   -webkit-ruby-position: after;
   ruby-position: under;
 }
 
-.App ruby rt {
+.RubySpan ruby:hover:not(.no-text),
+.RubySpan ruby:hover rt {
+  border-radius: 5px;
+  background-color: #eee;
+}
+
+.RubySpan rt {
+  padding: 10px 0;
+  color: #999;
   font-size: 20%;
-  opacity: 0.5;
 }
