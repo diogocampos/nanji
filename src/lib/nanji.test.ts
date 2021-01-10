@@ -1,6 +1,6 @@
 import nanji from './nanji'
+import * as random from './random'
 import { R, r } from './ruby'
-import { randomString } from './test-helpers'
 
 const { spyOn } = jest
 
@@ -11,7 +11,7 @@ afterEach(() => {
 describe('getNewPhrase', () => {
   describe('with no arguments', () => {
     it('calls buildPhrase once with the current time', () => {
-      const phrase = r(randomString(), randomString())
+      const phrase = r(random.string(), random.string())
 
       spyOn(nanji, 'buildPhrase').mockReturnValue(phrase)
 
@@ -30,8 +30,8 @@ describe('getNewPhrase', () => {
 
   describe('with a previous Ruby', () => {
     it('calls buildPhrase once if first result is different', () => {
-      const previousPhrase = r(randomString(), randomString())
-      const newPhrase = r(randomString(), randomString())
+      const previousPhrase = r(random.string(), random.string())
+      const newPhrase = r(random.string(), random.string())
 
       spyOn(nanji, 'buildPhrase').mockReturnValue(newPhrase)
 
@@ -42,8 +42,8 @@ describe('getNewPhrase', () => {
     })
 
     it('calls buildPhrase repeatedly if result is the same', () => {
-      const previousPhrase = r(randomString(), randomString())
-      const newPhrase = r(randomString(), randomString())
+      const previousPhrase = r(random.string(), random.string())
+      const newPhrase = r(random.string(), random.string())
 
       spyOn(nanji, 'buildPhrase')
         .mockReturnValueOnce(previousPhrase)

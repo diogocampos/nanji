@@ -1,11 +1,11 @@
 import { storageItem } from './helpers'
-import { randomString } from './test-helpers'
+import * as random from './random'
 
 describe('storageItem', () => {
   describe('the resulting load function', () => {
     it('calls storage.getItem and returns the result', () => {
-      const key = randomString()
-      const value = randomString()
+      const key = random.string()
+      const value = random.string()
 
       const mockStorage = ({
         getItem: jest.fn().mockReturnValue(value),
@@ -21,8 +21,8 @@ describe('storageItem', () => {
 
   describe('the resulting save function', () => {
     it('calls storage.setItem when given a string', () => {
-      const key = randomString()
-      const value = randomString()
+      const key = random.string()
+      const value = random.string()
 
       const mockStorage = ({
         setItem: jest.fn(),
@@ -35,7 +35,7 @@ describe('storageItem', () => {
     })
 
     it('calls storage.removeItem when given null', () => {
-      const key = randomString()
+      const key = random.string()
 
       const mockStorage = ({
         removeItem: jest.fn(),
