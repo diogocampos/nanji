@@ -1,7 +1,15 @@
 .App {
+  min-height: 100vh;
   text-align: center;
 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
   .App-time {
+    margin: 60px 20px;
+    margin-top: 40px;
     font-size: 500%;
   }
 }

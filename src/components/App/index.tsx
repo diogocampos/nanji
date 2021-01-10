@@ -37,12 +37,14 @@ export default function App() {
         <RubySpan content={phrase} />
       </p>
 
-      <button onClick={handleRefresh}>Refresh</button>
-      <button disabled={!navigator.clipboard} onClick={handleCopy}>
-        Copy
-      </button>
+      <p>
+        <button onClick={handleRefresh}>Refresh</button>
+        <button disabled={!navigator.clipboard} onClick={handleCopy}>
+          Copy
+        </button>
 
-      <Speaker lang='ja' text={text} />
+        <Speaker lang='ja' text={text} />
+      </p>
     </div>
   )
 }
