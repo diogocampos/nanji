@@ -1,13 +1,13 @@
-import { ChangeEvent, useEffect, useMemo, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 
 import { storageItem } from '../../lib/helpers'
-import { getVoices, isSpeaking, speak } from '../../lib/speech'
+import { isSpeaking, speak, useVoices } from '../../lib/speech'
 
 export default function Speaker(props: {
   readonly lang: string
   readonly text: string
 }) {
-  const availableVoices = useMemo(() => getVoices(props.lang), [props.lang])
+  const availableVoices = useVoices(props.lang)
   const [voice, setVoice] = useState<SpeechSynthesisVoice>()
   const [slow, setSlow] = useState(false)
 
@@ -59,7 +59,6 @@ function getInitialVoice(
 ): SpeechSynthesisVoice | undefined {
   const voiceURI = loadVoiceURI()
   const voice = voiceURI ? findVoiceByURI(voiceURI, voices) : undefined
-  if (voiceURI && !voice) saveVoiceURI(null)
   return voice || voices[0]
 }
 
