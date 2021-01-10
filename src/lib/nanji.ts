@@ -25,6 +25,7 @@ function buildPhrase(
   options: {
     imawa?: boolean
     ampm?: boolean
+    shougo?: boolean
     han?: boolean
     choudo?: false | 'before' | 'after'
     goro?: boolean
@@ -34,6 +35,7 @@ function buildPhrase(
   const {
     imawa: useImawa = coinFlip(),
     ampm: useAMPM = coinFlip(),
+    shougo: useShougo = coinFlip(),
     han: useHan = coinFlip(),
     choudo: useChoudo = coinFlip() && (coinFlip() ? 'before' : 'after'),
     goro: useGoro = coinFlip(),
@@ -60,13 +62,12 @@ function buildPhrase(
   // prettier-ignore
   const hh
     = hour === 0 && minute === 0 ? REIJI
-    : hour === 12 && minute === 0 ? SHOUGO
+    : hour === 12 && minute === 0 && useShougo ? SHOUGO
     : getHourSegment(hour)
 
   // prettier-ignore
   const mm
-    = minute === 0 ? R()
-    : minute === 30 && (useHan || goro.length) ? HAN
+    = minute === 30 && (useHan || goro.length) ? HAN
     : getMinuteSegment(minute)
 
   const time =
