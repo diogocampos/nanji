@@ -31,13 +31,17 @@ export default function Speaker(props: {
     setVoice(setVoiceByURI(voiceURI, availableVoices))
   }
 
-  if (!voice) return null
-
   return (
     <span className='Speaker'>
-      <button onClick={handleSpeak}>Speak</button>
+      <button disabled={!voice} onClick={handleSpeak}>
+        Speak
+      </button>
 
-      <select value={voice.voiceURI} onChange={handleChangeVoice}>
+      <select
+        value={voice?.voiceURI}
+        disabled={!availableVoices.length}
+        onChange={handleChangeVoice}
+      >
         {availableVoices.map(({ voiceURI, name }) => (
           <option key={voiceURI} value={voiceURI}>
             {voiceURI.endsWith('.premium') ? `${name} (Enhanced)` : name}

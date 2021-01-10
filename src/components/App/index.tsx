@@ -28,7 +28,9 @@ export default function App() {
       </p>
 
       <button onClick={handleRefresh}>Refresh</button>
-      {!!navigator.clipboard && <button onClick={handleCopy}>Copy</button>}
+      <button disabled={!navigator.clipboard} onClick={handleCopy}>
+        Copy
+      </button>
 
       <Speaker lang='ja' text={text} />
     </div>
