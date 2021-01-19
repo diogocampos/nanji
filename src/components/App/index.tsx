@@ -8,6 +8,7 @@ import Speaker from '../Speaker'
 import './styles.scss'
 
 const TITLE = R(
+  r('今', 'ima'),
   r('何', 'nan'),
   r('時', 'ji'),
   r('で', 'de'),
@@ -30,7 +31,7 @@ export default function App() {
 
   return (
     <div className='App'>
-      <h1 className='App-title' title='What time is it?' lang='ja'>
+      <h1 className='App-title' title='What time is it now?' lang='ja'>
         <RubySpan content={TITLE} shy />
       </h1>
 
