@@ -4,28 +4,29 @@ extends:
   - react-app/jest
 
 rules:
-  import/newline-after-import: warn
-  import/no-duplicates: warn
-  import/no-nodejs-modules: warn
+  import/newline-after-import: error
+  import/no-duplicates: error
+  import/no-nodejs-modules: error
   import/order:
-    - warn
+    - error
     - groups: [[builtin, external], [parent, sibling, index]]
       newlines-between: always
       alphabetize: { order: asc, caseInsensitive: true }
 
   no-console:
-    - warn
+    - error
     - allow: [error, warn]
 
-  prefer-const: warn
+  object-shorthand: error
+  prefer-const: error
 
-  react/jsx-no-useless-fragment: warn
+  react/jsx-no-useless-fragment: error
   react/self-closing-comp:
-    - warn
+    - error
     - component: true
       html: true
 
   sort-imports:
-    - warn
+    - error
     - ignoreCase: false
       ignoreDeclarationSort: true
