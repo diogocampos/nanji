@@ -1,6 +1,7 @@
 import classNames from 'classnames'
 import { useMemo, useState } from 'react'
 
+import { copyTextToClipboard } from '../../lib/helpers'
 import { getNewPhrase } from '../../lib/nanji'
 import Ruby, { R, r } from '../../lib/ruby'
 import Speaker from '../Speaker'
@@ -24,7 +25,7 @@ export default function App() {
   }
 
   function handleCopy() {
-    navigator.clipboard?.writeText(text).catch(console.error)
+    copyTextToClipboard(phrase.toString()).catch(console.error)
   }
 
   return (
