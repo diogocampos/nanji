@@ -1,16 +1,14 @@
-.App {
-  min-height: 100vh;
+.Nanji {
   text-align: center;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  .App-time {
+  .Nanji-time {
     margin: 60px 20px;
     margin-top: 40px;
     font-size: 500%;
+  }
+
+  .Nanji-toolbar {
+    margin: 30px 20px;
   }
 }
 

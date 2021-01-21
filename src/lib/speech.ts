@@ -19,10 +19,10 @@ export function useVoices(lang: string = ''): SpeechSynthesisVoice[] {
 
   useEffect(() => {
     if (!window.speechSynthesis?.addEventListener) return
-    const handler = () => setVoices(getVoices(lang))
+    const update = () => setVoices(getVoices(lang))
 
-    speechSynthesis.addEventListener('voiceschanged', handler)
-    return () => speechSynthesis.removeEventListener('voiceschanged', handler)
+    speechSynthesis.addEventListener('voiceschanged', update)
+    return () => speechSynthesis.removeEventListener('voiceschanged', update)
   }, [lang])
 
   return voices

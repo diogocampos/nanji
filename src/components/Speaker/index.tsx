@@ -1,13 +1,41 @@
-import { ChangeEvent, useEffect, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 
 import { storageItem } from '../../lib/helpers'
 import { isSpeaking, speak, useVoices } from '../../lib/speech'
 
 export default function Speaker(props: {
-  readonly lang: string
-  readonly text: string
+  lang: string
+  content: { toString: () => string }
 }) {
-  const availableVoices = useVoices(props.lang)
+  const { state, actions } = useSpeaker(props.lang, props.content)
+
+  function handleChangeVoice(event: ChangeEvent<HTMLSelectElement>) {
+    actions.selectVoiceByURI(event.target.value)
+  }
+
+  return (
+    <span className='Speaker'>
+      <button disabled={!state.voice} onClick={actions.speakContent}>
+        Speak
+      </button>
+
+      <select
+        value={state.voice?.voiceURI}
+        disabled={!state.availableVoices.length}
+        onChange={handleChangeVoice}
+      >
+        {state.availableVoices.map(({ voiceURI, name }) => (
+          <option key={voiceURI} value={voiceURI}>
+            {voiceURI.endsWith('.premium') ? `${name} (Enhanced)` : name}
+          </option>
+        ))}
+      </select>
+    </span>
+  )
+}
+
+function useSpeaker(lang: string, content: { toString: () => string }) {
+  const availableVoices = useVoices(lang)
   const [voice, setVoice] = useState<SpeechSynthesisVoice>()
   const [slow, setSlow] = useState(false)
 
@@ -17,40 +45,27 @@ export default function Speaker(props: {
 
   useEffect(() => {
     setSlow(false)
-  }, [props.text, voice]) // reset speed when text or voice changes
+  }, [content, voice]) // reset speed when content or voice changes
 
-  function handleSpeak() {
+  const speakContent = useCallback(() => {
     if (voice && !isSpeaking()) {
-      speak(props.text, voice, { slow })
+      speak(content.toString(), voice, { slow })
       setSlow((slow) => !slow)
     }
-  }
+  }, [voice, content, slow])
 
-  function handleChangeVoice(event: ChangeEvent<HTMLSelectElement>) {
-    const voiceURI = event.target.value
-    setVoice(setVoiceByURI(voiceURI, availableVoices))
-  }
-
-  return (
-    <span className='Speaker'>
-      <button disabled={!voice} onClick={handleSpeak}>
-        Speak
-      </button>
-
-      <select
-        value={voice?.voiceURI}
-        disabled={!availableVoices.length}
-        onChange={handleChangeVoice}
-      >
-        {availableVoices.map(({ voiceURI, name }) => (
-          <option key={voiceURI} value={voiceURI}>
-            {voiceURI.endsWith('.premium') ? `${name} (Enhanced)` : name}
-          </option>
-        ))}
-      </select>
-    </span>
+  const selectVoiceByURI = useCallback(
+    (voiceURI: string) => setVoice(setVoiceByURI(voiceURI, availableVoices)),
+    [availableVoices],
   )
+
+  return {
+    state: { voice, availableVoices },
+    actions: { speakContent, selectVoiceByURI },
+  }
 }
+
+// Helpers
 
 const [loadVoiceURI, saveVoiceURI] = storageItem('selectedVoiceURI')
 

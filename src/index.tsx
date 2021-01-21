@@ -2,12 +2,12 @@ import React from 'react'
 import ReactDOM from 'react-dom'
 
 import './index.scss'
-import App from './components/App'
+import Nanji from './components/Nanji'
 import reportWebVitals from './reportWebVitals'
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Nanji />
   </React.StrictMode>,
   document.getElementById('root'),
 )
