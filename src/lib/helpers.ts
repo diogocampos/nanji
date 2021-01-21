@@ -1,6 +1,10 @@
-export async function copyTextToClipboard(text: string) {
-  if (!navigator.clipboard) throw new Error('Clipboard not available')
-  return navigator.clipboard.writeText(text)
+export function isClipboardAvailable(): boolean {
+  return !!navigator.clipboard
+}
+
+export function copyTextToClipboard(text: string) {
+  navigator.clipboard?.writeText(text).catch(console.error) ||
+    console.error('Clipboard not available')
 }
 
 export function storageItem(key: string, storage = localStorage) {

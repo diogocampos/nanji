@@ -2,6 +2,7 @@ import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 
 import { storageItem } from '../../lib/helpers'
 import { isSpeaking, speak, useVoices } from '../../lib/speech'
+import Button from '../Button'
 
 export default function Speaker(props: {
   lang: string
@@ -15,9 +16,9 @@ export default function Speaker(props: {
 
   return (
     <span className='Speaker'>
-      <button disabled={!state.voice} onClick={actions.speakContent}>
+      <Button disabled={!state.voice} onClick={actions.speakContent}>
         Speak
-      </button>
+      </Button>
 
       <select
         value={state.voice?.voiceURI}

@@ -1,9 +1,9 @@
-import classNames from 'classnames'
 import { useCallback, useState } from 'react'
 
-import { copyTextToClipboard } from '../../lib/helpers'
 import { getNewPhrase } from '../../lib/nanji'
-import Ruby, { R, r } from '../../lib/ruby'
+import { R, r } from '../../lib/ruby'
+import Button, { CopyButton } from '../Button'
+import RubySpan from '../RubySpan'
 import Speaker from '../Speaker'
 import './styles.scss'
 
@@ -20,17 +20,13 @@ const TITLE = R(
 function useNanji() {
   const [phrase, setPhrase] = useState(getNewPhrase)
 
-  const refreshPhrase = useCallback(() => {
+  const changePhrase = useCallback(() => {
     setPhrase(getNewPhrase(phrase))
-  }, [phrase])
-
-  const copyPhraseToClipboard = useCallback(() => {
-    copyTextToClipboard(phrase.toString()).catch(console.error)
   }, [phrase])
 
   return {
     state: { phrase },
-    actions: { refreshPhrase, copyPhraseToClipboard },
+    actions: { changePhrase },
   }
 }
 
@@ -48,42 +44,10 @@ export default function Nanji() {
       </p>
 
       <div className='Nanji-toolbar'>
-        <button onClick={actions.refreshPhrase}>Refresh</button>
-        <CopyButton onClick={actions.copyPhraseToClipboard} />
+        <Button onClick={actions.changePhrase}>Refresh</Button>
+        <CopyButton content={state.phrase} />
         <Speaker lang='ja' content={state.phrase} />
       </div>
     </div>
-  )
-}
-
-function RubySpan(props: { content: Ruby; lang?: string; shy?: boolean }) {
-  const { shy = false } = props
-
-  return (
-    <span
-      className={classNames('RubySpan', shy && 'RubySpan-shy')}
-      lang={props.lang}
-    >
-      {props.content.map(({ base, text }, i) => (
-        <ruby key={i} className={classNames(!text && 'RubySpan-notext')}>
-          <span>{base}</span>
-          {text && (
-            <>
-              <rp>(</rp>
-              <rt>{text}</rt>
-              <rp>)</rp>
-            </>
-          )}
-        </ruby>
-      ))}
-    </span>
-  )
-}
-
-function CopyButton(props: { onClick: () => void }) {
-  return (
-    <button disabled={!navigator.clipboard} onClick={props.onClick}>
-      Copy
-    </button>
   )
 }

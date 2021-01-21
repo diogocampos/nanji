@@ -1,46 +1,13 @@
 .Nanji {
   text-align: center;
-
-  .Nanji-time {
-    margin: 60px 20px;
-    margin-top: 40px;
-    font-size: 500%;
-  }
-
-  .Nanji-toolbar {
-    margin: 30px 20px;
-  }
 }
 
-.RubySpan {
-  ruby {
-    -webkit-ruby-position: after;
-    ruby-position: under;
-  }
-
-  rt {
-    padding: 10px 0;
-    font-size: 20%;
-    color: #999;
-  }
-
-  &:not(.RubySpan-shy) ruby:hover:not(.RubySpan-notext) {
-    &,
-    & rt {
-      border-radius: 5px;
-      background-color: var(--RubySpan-hover);
-    }
-  }
-
-  &.RubySpan-shy:not(:hover) rt {
-    visibility: hidden;
-  }
-
-  --RubySpan-hover: #eee;
+.Nanji-time {
+  margin: 60px 20px;
+  margin-top: 40px;
+  font-size: 500%;
 }
 
-@media (prefers-color-scheme: dark) {
-  .RubySpan {
-    --RubySpan-hover: #333;
-  }
+.Nanji-toolbar {
+  margin: 30px 20px;
 }
