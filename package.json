@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "react-scripts start",
-    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "lint": "eslint --max-warnings 0 . && prettier --check .",
     "test": "react-scripts test",
     "build": "react-scripts build"
   },
